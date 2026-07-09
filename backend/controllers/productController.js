@@ -1,34 +1,63 @@
 import Product from '../models/Product.js';
 import { errorHandler } from '../middleware/errorHandler.js';
+import Category from "../models/Category.js";
 
+// @desc    Get all products with filtering and search
+// @route   GET /api/products
+// @access  Public
 // @desc    Get all products with filtering and search
 // @route   GET /api/products
 // @access  Public
 export const getProducts = async (req, res, next) => {
   try {
-    const { search, category, ecoBadge } = req.query;
-    
-    // Build query
-    let query = {};
-    
+    const {
+      search,
+      category,
+      section,
+      item,
+      ecoBadge,
+    } = req.query;
+
+    let query = {
+      isActive: true,
+    };
+
+    // Search by product name
     if (search) {
-      query.name = { $regex: search, $options: 'i' };
+      query.name = {
+        $regex: search,
+        $options: "i",
+      };
     }
-    
+
+    // Category slug
     if (category) {
       query.category = category;
     }
-    
-    if (ecoBadge) {
-      query.ecoBadge = ecoBadge;
+
+    // Section slug
+    if (section) {
+      query.section = section;
     }
-    
-    const products = await Product.find(query).sort({ createdAt: -1 });
-    
+
+    // Item slug
+    if (item) {
+      query.item = item;
+    }
+
+    // Eco Badge
+    if (ecoBadge) {
+      query.ecoBadges = ecoBadge;
+    }
+
+   const products = await Product.find(query)
+  .populate("seller", "name")
+  .sort({ createdAt: -1 });
+
     res.status(200).json({
       success: true,
       count: products.length,
-      products
+      products,
     });
   } catch (error) {
     next(error);
@@ -40,7 +69,8 @@ export const getProducts = async (req, res, next) => {
 // @access  Public
 export const getProductById = async (req, res, next) => {
   try {
-    const product = await Product.findById(req.params.id);
+   const product = await Product.findById(req.params.id)
+  .populate("seller", "name email");
     
     if (!product) {
       return errorHandler(404, 'Product not found');
@@ -125,11 +155,12 @@ export const deleteProduct = async (req, res, next) => {
 // @access  Public
 export const getCategories = async (req, res, next) => {
   try {
-    const categories = await Product.distinct('category');
-    
+    const categories = await Category.find({ isActive: true })
+      .sort({ order: 1 });
+
     res.status(200).json({
       success: true,
-      categories
+      categories,
     });
   } catch (error) {
     next(error);

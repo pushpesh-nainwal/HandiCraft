@@ -12,7 +12,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
+navbarData.js
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
