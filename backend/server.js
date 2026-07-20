@@ -5,7 +5,8 @@ import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 import productRoutes from './routes/products.js';
 import categoryRoutes from './routes/categoryRoutes.js';
-
+import testRoute from "./routes/testroute.js";
+import cartRoutes from "./routes/cart.js";
 
 dotenv.config();
 
@@ -23,7 +24,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/categories', categoryRoutes);
-
+app.use("/api/test", testRoute);
+app.use("/api/cart", cartRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'GreenCraft API is running' });

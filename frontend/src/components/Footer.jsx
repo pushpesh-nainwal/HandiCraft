@@ -1,44 +1,75 @@
-import { Link } from 'react-router-dom';
-import { Leaf, Facebook, Twitter, Instagram, Mail } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
+import logo from "../assets/logo.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer
+      className="bg-[#F7F8F3] border-t border-[#E4E9E2]"
+      style={{ fontFamily: "'Work Sans', sans-serif" }}
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-8 py-14">
+        {/* Top Section */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
           {/* Brand */}
-          <div className="col-span-1 md:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <Leaf className="h-8 w-8 text-green-500" />
-              <span className="text-2xl font-bold">GreenCraft</span>
+          <div>
+            <div className="inline-flex bg-white rounded-2xl p-3 shadow-md border border-[#E4E9E2] mb-5">
+              <img
+                src={logo}
+                alt="HandiCraft Logo"
+                className="h-20 w-auto object-contain transition-transform duration-300 hover:scale-105"
+              />
             </div>
-            <p className="text-gray-400 text-sm">
-              Your trusted marketplace for handmade and eco-friendly products. 
-              Making sustainable choices easy.
+
+            <p className="text-[#5C6F5D] leading-7 text-[15px]">
+              Discover authentic handmade treasures crafted by talented
+              artisans. Every purchase celebrates creativity, tradition, and
+              sustainable craftsmanship.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3
+              className="text-xl text-[#2D3A2F] mb-5"
+              style={{ fontFamily: "'Fraunces', serif" }}
+            >
+              Quick Links
+            </h3>
+
+            <ul className="space-y-3">
               <li>
-                <Link to="/" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Home
                 </Link>
               </li>
+
               <li>
-                <Link to="/products" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/products"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Products
                 </Link>
               </li>
+
               <li>
-                <Link to="/about" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/about"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   About Us
                 </Link>
               </li>
+
               <li>
-                <Link to="/contact" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/contact"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Contact
                 </Link>
               </li>
@@ -47,60 +78,109 @@ const Footer = () => {
 
           {/* Categories */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Categories</h3>
-            <ul className="space-y-2">
+            <h3
+              className="text-xl text-[#2D3A2F] mb-5"
+              style={{ fontFamily: "'Fraunces', serif" }}
+            >
+              Categories
+            </h3>
+
+            <ul className="space-y-3">
               <li>
-                <Link to="/products?category=Home Decor" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/products?category=Home Decor"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Home Decor
                 </Link>
               </li>
+
               <li>
-                <Link to="/products?category=Jewelry" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/products?category=Jewelry"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Jewelry
                 </Link>
               </li>
+
               <li>
-                <Link to="/products?category=Clothing" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/products?category=Clothing"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Clothing
                 </Link>
               </li>
+
               <li>
-                <Link to="/products?category=Kitchen" className="text-gray-400 hover:text-green-500 transition-colors">
+                <Link
+                  to="/products?category=Kitchen"
+                  className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+                >
                   Kitchen
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Connect */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Connect With Us</h3>
-            <div className="flex space-x-4 mb-4">
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
-                <Facebook className="h-6 w-6" />
+            <h3
+              className="text-xl text-[#2D3A2F] mb-5"
+              style={{ fontFamily: "'Fraunces', serif" }}
+            >
+              Connect With Us
+            </h3>
+
+            <div className="flex gap-4 mb-6">
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-white border border-[#E4E9E2] flex items-center justify-center text-[#6B8E6E] hover:bg-[#6B8E6E] hover:text-white transition-all duration-300 shadow-sm"
+              >
+                <Facebook size={18} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
-                <Twitter className="h-6 w-6" />
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-white border border-[#E4E9E2] flex items-center justify-center text-[#6B8E6E] hover:bg-[#6B8E6E] hover:text-white transition-all duration-300 shadow-sm"
+              >
+                <Twitter size={18} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
-                <Instagram className="h-6 w-6" />
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-white border border-[#E4E9E2] flex items-center justify-center text-[#6B8E6E] hover:bg-[#6B8E6E] hover:text-white transition-all duration-300 shadow-sm"
+              >
+                <Instagram size={18} />
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-500 transition-colors">
-                <Mail className="h-6 w-6" />
+
+              <a
+                href="#"
+                className="w-10 h-10 rounded-full bg-white border border-[#E4E9E2] flex items-center justify-center text-[#6B8E6E] hover:bg-[#6B8E6E] hover:text-white transition-all duration-300 shadow-sm"
+              >
+                <Mail size={18} />
               </a>
             </div>
-            <p className="text-gray-400 text-sm">
-              <a href="mailto:support@greencraft.com" className="hover:text-green-500 transition-colors">
-                support@greencraft.com
-              </a>
-            </p>
+
+            <a
+              href="mailto:support@handicraft.com"
+              className="text-[#5C6F5D] hover:text-[#D97757] transition-colors"
+            >
+              support@handicraft.com
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} GreenCraft. All rights reserved.</p>
-          <p className="mt-2">Made with 💚 for a sustainable future</p>
+        {/* Bottom */}
+        <div className="mt-12 pt-6 border-t border-[#E4E9E2] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-[#5C6F5D] text-sm">
+            © {new Date().getFullYear()} HandiCraft. All rights reserved.
+          </p>
+
+          <p className="text-[#6B8E6E] text-sm">
+            Crafted with ❤️ for artisans around the world.
+          </p>
         </div>
       </div>
     </footer>

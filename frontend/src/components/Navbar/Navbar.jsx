@@ -1,95 +1,101 @@
 import { useEffect, useState } from "react";
 import api from "../../utils/api";
-
-import { Link } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import { Leaf, Search, ShoppingCart, User, LogOut } from 'lucide-react';
+import logo from "../../assets/logo.png";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { Search, ShoppingCart, User, LogOut } from "lucide-react";
 import NavItem from "./NavItem";
-
+import ProfileDropdown from "./ProfileDropdown";
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
 
-const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const handleLogout = () => {
     logout();
   };
-   useEffect(() => {
-  fetchCategories();
-}, []);
 
-const fetchCategories = async () => {
-  try {
-    const response = await api.get("/categories");
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
-    setCategories(response.data.categories);
-  } catch (error) {
-    console.error(error);
-  }
-};
+  const fetchCategories = async () => {
+    try {
+      const response = await api.get("/categories");
+
+      setCategories(response.data.categories);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
-    <nav className="bg-[#F3ECE2] shadow-sm sticky top-0 z-50 border-b border-[#DED4C7]">
+    <nav className="bg-[#fff] sticky top-0 z-50 border-b border-[#E6DBC8]">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-[72px] gap-8">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <Leaf className="h-8 w-8 text-[#8FA77A]" />
-           <span className="text-2xl font-bold text-[#4D3B2F] tracking-wide">GreenCraft</span>
+          <Link to="/">
+            <img
+              src={logo}
+              alt="HandiCraft Logo"
+              className="h-35 w-40 object-contain transition-transform duration-300 hover:scale-105"
+            />
           </Link>
 
           {/* Search Bar */}
-          <div className="hidden md:flex flex-1 max-w-lg mx-8">
-            <div className="relative w-full">
-              <input
-                type="text"
-                placeholder="Search Hand made products..."
-                className="w-full pl-10 pr-4 py-2 bg-[#FFFCF8] border border-[#DED4C7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] placeholder:text-[#8F8175]"
-              />
-              <Search className="absolute left-3 top-2.5 h-5 w-5 text-[#8F8175]" />
+          <div className="hidden md:flex flex-1 max-w-xl">
+            <div className="w-full p-[2px] bg-[#D8CCBB] rounded-full">
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  placeholder="Seek unique, handcrafted pieces..."
+                  className="w-full pl-11 pr-4 py-2.5 bg-[#FBF7F0] rounded-full text-[13.5px] text-[#2E2016] border border-transparent focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E] placeholder:text-[#9C8D7B] transition-all"
+                />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9C8D7B]" />
+              </div>
             </div>
           </div>
-          
 
           {/* Navigation Links */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center gap-5 shrink-0">
             <Link
               to="/products"
-              className="text-[#5E5348] hover:text-[#8B5E3C] font-medium transition-colors"
+              className="hidden sm:inline text-[13.5px] font-medium tracking-wide text-[#4A3B2C] hover:text-[#A8572E] transition-colors"
             >
               Products
             </Link>
 
             {isAuthenticated ? (
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center gap-5">
                 <Link
                   to="/cart"
-                 className="relative text-[#5E5348] hover:text-[#8B5E3C] transition-colors"
+                  className="relative text-[#4A3B2C] hover:text-[#A8572E] transition-colors"
                 >
-                  <ShoppingCart className="h-6 w-6" />
+                  <ShoppingCart
+                    className="h-[22px] w-[22px]"
+                    strokeWidth={1.75}
+                  />
                 </Link>
-                <div className="flex items-center space-x-2">
-                  <User className="h-6 w-6 text-[#5E5348]" />
-                  <span className="text-[#5E5348] font-medium">{user?.name}</span>
-                </div>
+                <ProfileDropdown />
                 <button
                   onClick={handleLogout}
-                  className="flex items-center space-x-1 text-gray-700 hover:text-red-600 transition-colors"
+                  className="flex items-center text-[#8F8175] hover:text-[#B3432B] transition-colors"
                   title="Logout"
                 >
-                  <LogOut className="h-5 w-5" />
+                  <LogOut className="h-[18px] w-[18px]" strokeWidth={1.75} />
                 </button>
               </div>
             ) : (
-              <div className="flex items-center space-x-3">
+              <div className="flex items-center gap-4">
                 <Link
                   to="/login"
-                  className="text-[#5E5348] hover:text-[#8B5E3C] font-medium transition-colors"
+                  className="text-[13.5px] font-medium tracking-wide text-[#4A3B2C] hover:text-[#A8572E] transition-colors"
                 >
                   Login
                 </Link>
                 <Link
                   to="/register"
-                  className="bg-[#8B5E3C] text-white px-4 py-2 rounded-lg hover:bg-[#6E472A] transition-colors font-medium shadow-sm"
+                  className="bg-[#2E2016] text-[#FBF7F0] text-[13.5px] font-medium tracking-wide px-5 py-2.5 rounded-full hover:bg-[#A8572E] transition-colors duration-250"
                 >
                   Sign Up
                 </Link>
@@ -99,30 +105,21 @@ const fetchCategories = async () => {
         </div>
 
         {/* ================= Category Navbar ================= */}
-<div className="hidden lg:flex items-center justify-center gap-10 h-12 border-t border-[#DED4C7] bg-[#F8F5EF]">
-
-  
-
-  {categories.map((category) => (
-    <NavItem
-      key={category.name}
-      category={category}
-    />
-  ))}
-
-</div>
-
-
+        <div className="hidden lg:flex items-center justify-center gap-2 h-14 border-t border-[#E6DBC8]">
+          {categories.map((category) => (
+            <NavItem key={category.title} category={category} />
+          ))}
+        </div>
 
         {/* Mobile Search */}
         <div className="md:hidden pb-4">
           <div className="relative">
             <input
               type="text"
-              placeholder="Search products..."
-              className="w-full pl-10 pr-4 py-2 bg-[#FFFCF8] border border-[#DED4C7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8B5E3C] placeholder:text-[#8F8175]"
+              placeholder="Seek unique, handcrafted pieces..."
+              className="w-full pl-11 pr-4 py-2.5 bg-[#FFFFFF] border border-[#E6DBC8] rounded-full text-[13.5px] text-[#2E2016] focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E] placeholder:text-[#9C8D7B]"
             />
-            <Search className="absolute left-3 top-2.5 h-5 w-5 text-[#8F8175]" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-[#9C8D7B]" />
           </div>
         </div>
       </div>

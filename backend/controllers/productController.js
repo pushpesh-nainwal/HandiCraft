@@ -1,7 +1,7 @@
 import Product from '../models/Product.js';
 import { errorHandler } from '../middleware/errorHandler.js';
 import Category from "../models/Category.js";
-
+import User from "../models/User.js";
 // @desc    Get all products with filtering and search
 // @route   GET /api/products
 // @access  Public
@@ -90,7 +90,10 @@ export const getProductById = async (req, res, next) => {
 // @access  Private (for now, will be admin only later)
 export const createProduct = async (req, res, next) => {
   try {
-    const product = await Product.create(req.body);
+    const product = await Product.create({
+    ...req.body,
+    seller: req.user._id
+});
     
     res.status(201).json({
       success: true,
@@ -112,7 +115,15 @@ export const updateProduct = async (req, res, next) => {
     if (!product) {
       return errorHandler(404, 'Product not found');
     }
-    
+    if (
+    product.seller.toString() !== req.user._id.toString() &&
+    req.user.role !== "admin"
+) {
+    return res.status(403).json({
+        success: false,
+        message: "Not authorized"
+    });
+}
     product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true
@@ -138,7 +149,15 @@ export const deleteProduct = async (req, res, next) => {
     if (!product) {
       return errorHandler(404, 'Product not found');
     }
-    
+    if (
+    product.seller.toString() !== req.user._id.toString() &&
+    req.user.role !== "admin"
+) {
+    return res.status(403).json({
+        success: false,
+        message: "Not authorized"
+    });
+}
     await product.deleteOne();
     
     res.status(200).json({
@@ -164,5 +183,40 @@ export const getCategories = async (req, res, next) => {
     });
   } catch (error) {
     next(error);
+  }
+};
+
+export const getMyProducts = async (req, res, next) => {
+    try {
+
+        const products = await Product.find({
+            seller: req.user._id
+        }).sort({ createdAt: -1 });
+
+        res.status(200).json({
+            success: true,
+            count: products.length,
+            products
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+
+    res.json({
+      success: true,
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
   }
 };
