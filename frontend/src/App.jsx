@@ -14,8 +14,13 @@ import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import MyOrders from "./pages/MyOrders";
+import OrderDetails from "./pages/OrderDetails";
+import Wishlist from "./pages/Wishlist";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrders from "./pages/admin/Orders";
+
 import SellerDashboard from "./pages/seller/SellerDashboard";
 import MyProducts from "./pages/seller/MyProducts";
 import AddProduct from "./pages/seller/AddProduct";
@@ -41,6 +46,23 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/orders"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orders/:id"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <OrderDetails />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/wishlist" element={<Wishlist />} />
         </Route>
 
         {/* Admin */}
@@ -52,6 +74,7 @@ function App() {
           }
         >
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
         </Route>
 
         {/* Seller */}

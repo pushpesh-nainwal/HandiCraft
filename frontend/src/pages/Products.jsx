@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import api from "../utils/api";
 import { addToCart } from "../services/cartService";
 import prodHero from "../assets/prodhero.png";
+
 import {
   Search,
   SlidersHorizontal,
@@ -12,7 +13,7 @@ import {
   Heart,
   Share2,
 } from "lucide-react";
-
+import { useWishlist } from "../context/WishlistContext";
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
   { value: "price_asc", label: "Price: Low to High" },
@@ -51,7 +52,7 @@ const Products = () => {
     "Natural",
     "Upcycled",
   ];
-
+  const { toggle, isWishlisted, loading: wishlistLoading } = useWishlist();
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -468,16 +469,24 @@ const Products = () => {
                     {/* Wishlist */}
 
                     <button
-                      onClick={(e) => {
+                      onClick={async (e) => {
                         e.preventDefault();
                         e.stopPropagation();
-
-                        // TODO: wire up wishlist action
+                        await toggle(product._id);
                       }}
-                      title="Add to wishlist"
-                      className="flex items-center justify-center h-9 w-9 rounded-full bg-white text-[#2E2016] hover:bg-[#A8572E] hover:text-white transition-colors duration-200"
+                      disabled={wishlistLoading}
+                      title="Wishlist"
+                      className="flex items-center justify-center h-9 w-9 rounded-full bg-white hover:bg-[#A8572E] transition-colors duration-200"
                     >
-                      <Heart size={16} strokeWidth={2} />
+                      <Heart
+                        size={16}
+                        strokeWidth={2}
+                        className={
+                          isWishlisted(product._id)
+                            ? "fill-red-500 text-red-500"
+                            : "text-[#2E2016]"
+                        }
+                      />
                     </button>
 
                     {/* Share */}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../utils/api";
 import { addToCart } from "../services/cartService";
+import ReviewSection from "../components/reviews/ReviewSection";
 import {
   ArrowLeft,
   ShoppingCart,
@@ -259,6 +260,8 @@ const ProductDetails = () => {
             </div>
           </div>
         </div>
+
+        <ReviewSection product={product} />
 
         {/* Similar Products Section */}
         <div className="mt-12">
