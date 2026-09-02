@@ -31,20 +31,22 @@ const MyProducts = () => {
     <div>
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-3">
-          <Package className="text-green-600" />
-          <h1 className="text-3xl font-bold">My Products</h1>
+          <Package className="text-[#A8572E]" />
+          <h1 className="text-3xl font-bold text-[#2E2016]">My Products</h1>
         </div>
 
-        <p className="text-gray-500">{products.length} Products</p>
+        <p className="text-[#7A6A58]">{products.length} Products</p>
       </div>
 
       {products.length === 0 ? (
         <div className="bg-white rounded-xl shadow p-12 text-center">
-          <Package size={60} className="mx-auto text-gray-400 mb-4" />
+          <Package size={60} className="mx-auto text-[#9C8D7B] mb-4" />
 
-          <h2 className="text-xl font-semibold">No Products Yet</h2>
+          <h2 className="text-xl font-semibold text-[#2E2016]">
+            No Products Yet
+          </h2>
 
-          <p className="text-gray-500 mt-2">
+          <p className="text-[#7A6A58] mt-2">
             Start selling by adding your first handmade product.
           </p>
         </div>

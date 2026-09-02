@@ -2,14 +2,13 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
-import SellerLayout from "./layouts/SellerLayout";
 
 import Cart from "./pages/Cart";
 
 import ProtectedRoute from "./components/routes/ProtectedRoute";
 import SellerRoute from "./components/routes/SellerRoute";
 
-import Home from "./pages/Home";
+import HomeRoute from "./components/routes/HomeRoute";
 import Products from "./pages/Products";
 import ProductDetails from "./pages/ProductDetails";
 import Login from "./pages/Login";
@@ -27,17 +26,24 @@ import AddProduct from "./pages/seller/AddProduct";
 import Orders from "./pages/seller/Orders";
 import Analytics from "./pages/seller/Analytics";
 import EditProduct from "./pages/seller/EditProduct";
+
 function App() {
   return (
     <Router>
       <Routes>
-        {/* Public/User Layout */}
+        {/* ================= USER / SELLER LAYOUT ================= */}
         <Route element={<UserLayout />}>
-          <Route path="/" element={<Home />} />
+          {/* Public / Buyer */}
+          <Route path="/" element={<HomeRoute />} />
+
           <Route path="/products" element={<Products />} />
+
           <Route path="/products/:id" element={<ProductDetails />} />
+
           <Route path="/login" element={<Login />} />
+
           <Route path="/register" element={<Register />} />
+
           <Route
             path="/cart"
             element={
@@ -46,6 +52,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/orders"
             element={
@@ -54,6 +61,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route
             path="/orders/:id"
             element={
@@ -62,10 +70,70 @@ function App() {
               </ProtectedRoute>
             }
           />
+
           <Route path="/wishlist" element={<Wishlist />} />
+
+          {/* ================= SELLER ================= */}
+
+          <Route
+            path="/seller/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <SellerDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/products"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <MyProducts />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/products/add"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <AddProduct />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/products/edit/:id"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <SellerRoute>
+                  <EditProduct />
+                </SellerRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/orders"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <Orders />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/seller/analytics"
+            element={
+              <ProtectedRoute allowedRoles={["seller"]}>
+                <Analytics />
+              </ProtectedRoute>
+            }
+          />
         </Route>
 
-        {/* Admin */}
+        {/* ================= ADMIN ================= */}
+
         <Route
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
@@ -74,30 +142,8 @@ function App() {
           }
         >
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin/orders" element={<AdminOrders />} />
-        </Route>
 
-        {/* Seller */}
-        <Route
-          element={
-            <ProtectedRoute allowedRoles={["seller"]}>
-              <SellerLayout />
-            </ProtectedRoute>
-          }
-        >
-          <Route path="/seller/dashboard" element={<SellerDashboard />} />
-          <Route path="/seller/products" element={<MyProducts />} />
-          <Route path="/seller/products/add" element={<AddProduct />} />
-          <Route
-            path="/seller/products/edit/:id"
-            element={
-              <SellerRoute>
-                <EditProduct />
-              </SellerRoute>
-            }
-          />
-          <Route path="/seller/orders" element={<Orders />} />
-          <Route path="/seller/analytics" element={<Analytics />} />
+          <Route path="/admin/orders" element={<AdminOrders />} />
         </Route>
       </Routes>
     </Router>

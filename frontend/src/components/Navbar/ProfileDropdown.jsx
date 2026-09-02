@@ -13,13 +13,18 @@ const ProfileDropdown = () => {
       {/* Button */}
       <button
         onClick={() => setOpen(!open)}
-        className="flex items-center gap-2"
+        className="flex items-center gap-2 text-[#4A3B2C] hover:text-[#A8572E] transition-colors"
       >
         <User size={18} />
 
         <span className="hidden sm:block">{user?.name}</span>
 
-        <ChevronDown size={16} />
+        <ChevronDown
+          size={16}
+          className={`transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+        />
       </button>
 
       {/* Menu */}
@@ -30,21 +35,15 @@ const ProfileDropdown = () => {
             <h3 className="font-semibold text-gray-800">{user?.name}</h3>
 
             <p className="text-sm text-gray-500 truncate">{user?.email}</p>
+
+            {user?.role && (
+              <p className="text-xs text-[#A8572E] mt-1 capitalize">
+                {user.role}
+              </p>
+            )}
           </div>
 
-          {/* Dashboard */}
-
-          {user?.role === "seller" && (
-            <Link
-              to="/seller/dashboard"
-              onClick={() => setOpen(false)}
-              className="flex items-center gap-3 px-5 py-3 hover:bg-green-50 text-gray-700 transition"
-            >
-              📊
-              <span>Seller Dashboard</span>
-            </Link>
-          )}
-
+          {/* Admin Dashboard */}
           {user?.role === "admin" && (
             <Link
               to="/admin/dashboard"
@@ -60,7 +59,6 @@ const ProfileDropdown = () => {
           <div className="border-t" />
 
           {/* Profile */}
-
           <Link
             to="/profile"
             onClick={() => setOpen(false)}
@@ -70,26 +68,33 @@ const ProfileDropdown = () => {
             <span>My Profile</span>
           </Link>
 
+          {/* Orders */}
           <Link
-            to="/orders"
+            to={user?.role === "seller" ? "/seller/orders" : "/orders"}
             onClick={() => setOpen(false)}
             className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
           >
             📦
-            <span>My Orders</span>
+            <span>
+              {user?.role === "seller" ? "Seller Orders" : "My Orders"}
+            </span>
           </Link>
 
-          <Link
-            to="/wishlist"
-            onClick={() => setOpen(false)}
-            className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
-          >
-            ❤️
-            <span>Wishlist</span>
-          </Link>
+          {/* Wishlist - buyer only */}
+          {user?.role !== "seller" && (
+            <Link
+              to="/wishlist"
+              onClick={() => setOpen(false)}
+              className="flex items-center gap-3 px-5 py-3 hover:bg-gray-100 transition"
+            >
+              ❤️
+              <span>Wishlist</span>
+            </Link>
+          )}
 
           <div className="border-t" />
 
+          {/* Logout */}
           <button
             onClick={() => {
               logout();

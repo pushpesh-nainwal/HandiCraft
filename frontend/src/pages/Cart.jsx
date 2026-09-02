@@ -69,7 +69,7 @@ const Cart = () => {
   );
   return (
     <div className="max-w-5xl mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold mb-8 text-[#2E2016]">Shopping Cart</h1>
 
       {cart.items.map((item) => (
         <CartItem
@@ -89,7 +89,7 @@ const Cart = () => {
 
         <button
           onClick={handlePlaceOrder}
-          className="w-full mt-6 bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors"
+          className="w-full mt-6 bg-[#A8572E] text-white py-3 rounded-lg hover:bg-[#8E4525] transition-colors"
         >
           Place Order
         </button>

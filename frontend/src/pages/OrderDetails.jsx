@@ -40,22 +40,22 @@ const OrderDetails = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Pending":
-        return "bg-yellow-100 text-yellow-800";
+        return "bg-[#F3E8D6] text-[#8C6B2E]";
 
       case "Processing":
-        return "bg-blue-100 text-blue-800";
+        return "bg-[#FFF1D6] text-[#A96816]";
 
       case "Shipped":
-        return "bg-purple-100 text-purple-800";
+        return "bg-[#E8EEF8] text-[#46658E]";
 
       case "Delivered":
-        return "bg-green-100 text-green-800";
+        return "bg-[#E8F1E5] text-[#54724A]";
 
       case "Cancelled":
-        return "bg-red-100 text-red-800";
+        return "bg-[#F8E8E8] text-[#8E4646]";
 
       default:
-        return "bg-gray-100";
+        return "bg-[#F3ECE1] text-[#4A3B2C]";
     }
   };
 
@@ -63,9 +63,11 @@ const OrderDetails = () => {
     <div className="max-w-5xl mx-auto py-10 px-4">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Order #{order._id.slice(-6)}</h1>
+        <h1 className="text-3xl font-bold text-[#2E2016]">
+          Order #{order._id.slice(-6)}
+        </h1>
 
-        <p className="text-gray-500 mt-2">
+        <p className="text-[#7A6A58] mt-2">
           Placed on {new Date(order.createdAt).toLocaleString()}
         </p>
       </div>
@@ -94,15 +96,17 @@ const OrderDetails = () => {
               />
 
               <div>
-                <h2 className="font-semibold text-lg">{item.product.name}</h2>
+                <h2 className="font-semibold text-lg text-[#2E2016]">
+                  {item.product.name}
+                </h2>
 
-                <p className="text-gray-600">Qty: {item.quantity}</p>
+                <p className="text-[#7A6A58]">Qty: {item.quantity}</p>
 
-                <p className="text-green-700 font-medium">₹{item.price}</p>
+                <p className="text-[#7C8B65] font-medium">₹{item.price}</p>
               </div>
             </div>
 
-            <p className="font-semibold text-lg">
+            <p className="font-semibold text-lg text-[#2E2016]">
               ₹{item.price * item.quantity}
             </p>
           </div>
@@ -112,9 +116,9 @@ const OrderDetails = () => {
       {/* Total */}
       <div className="mt-8 bg-white rounded-xl shadow p-6">
         <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold">Total</h2>
+          <h2 className="text-xl font-semibold text-[#2E2016]">Total</h2>
 
-          <h2 className="text-2xl font-bold text-green-700">
+          <h2 className="text-2xl font-bold text-[#A8572E]">
             ₹{order.totalAmount}
           </h2>
         </div>

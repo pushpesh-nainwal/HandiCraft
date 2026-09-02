@@ -9,8 +9,11 @@ const ReviewForm = ({
   onSubmit,
 }) => {
   return (
-    <form onSubmit={onSubmit} className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-xl font-semibold mb-4">
+    <form
+      onSubmit={onSubmit}
+      className="bg-white rounded-lg shadow p-6 border border-[#E6DBC8]"
+    >
+      <h2 className="text-xl font-semibold mb-4 text-[#2E2016]">
         {editing ? "Edit Review" : "Write a Review"}
       </h2>
 
@@ -33,11 +36,11 @@ const ReviewForm = ({
         rows={4}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
-        className="w-full border rounded-lg p-3"
+        className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
         placeholder="Share your experience..."
       />
 
-      <button className="mt-5 bg-green-600 text-white px-6 py-2 rounded-lg">
+      <button className="mt-5 bg-[#A8572E] text-white px-6 py-2 rounded-lg hover:bg-[#8E4525] transition-colors">
         {editing ? "Update Review" : "Submit Review"}
       </button>
     </form>

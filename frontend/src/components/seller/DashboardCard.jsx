@@ -2,15 +2,15 @@ const DashboardCard = ({
   title,
   value,
   icon: Icon,
-  color = "text-green-600",
+  color = "text-[#A8572E]",
 }) => {
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition">
+    <div className="bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition border border-[#E6DBC8]">
       <div className="flex justify-between items-center">
         <div>
-          <p className="text-gray-500 text-sm">{title}</p>
+          <p className="text-[#7A6A58] text-sm">{title}</p>
 
-          <h2 className="text-3xl font-bold mt-2">{value}</h2>
+          <h2 className="text-3xl font-bold mt-2 text-[#2E2016]">{value}</h2>
         </div>
 
         <div className={`${color}`}>

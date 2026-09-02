@@ -25,11 +25,11 @@ const Orders = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="text-[#7A6A58]">Loading...</div>;
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-8">Seller Orders</h1>
+      <h1 className="text-3xl font-bold mb-8 text-[#2E2016]">Seller Orders</h1>
 
       {orders.map((order) => (
         <SellerOrderCard key={order._id} order={order} refresh={fetchOrders} />

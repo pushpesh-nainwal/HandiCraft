@@ -234,73 +234,83 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="bg-white rounded-xl shadow-md p-8">
-        <h1 className="text-3xl font-bold mb-8">
+      <div className="bg-white rounded-xl shadow-md p-8 border border-[#E6DBC8]">
+        <h1 className="text-3xl font-bold mb-8 text-[#2E2016]">
           {mode === "edit" ? "Edit Product" : "Add New Product"}
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Product Name */}
           <div>
-            <label className="block font-medium mb-2">Product Name</label>
+            <label className="block font-medium mb-2 text-[#4A3B2C]">
+              Product Name
+            </label>
 
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
             />
           </div>
 
           {/* Description */}
           <div>
-            <label className="block font-medium mb-2">Description</label>
+            <label className="block font-medium mb-2 text-[#4A3B2C]">
+              Description
+            </label>
 
             <textarea
               rows={5}
               name="description"
               value={formData.description}
               onChange={handleChange}
-              className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
+              className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
             />
           </div>
 
           {/* Price + Stock */}
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <label className="block font-medium mb-2">Price</label>
+              <label className="block font-medium mb-2 text-[#4A3B2C]">
+                Price
+              </label>
 
               <input
                 type="number"
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                className="w-full border rounded-lg p-3"
+                className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
               />
             </div>
 
             <div>
-              <label className="block font-medium mb-2">Stock</label>
+              <label className="block font-medium mb-2 text-[#4A3B2C]">
+                Stock
+              </label>
 
               <input
                 type="number"
                 name="stock"
                 value={formData.stock}
                 onChange={handleChange}
-                className="w-full border rounded-lg p-3"
+                className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
               />
             </div>
           </div>
 
           {/* Category */}
           <div>
-            <label className="block font-medium mb-2">Category</label>
+            <label className="block font-medium mb-2 text-[#4A3B2C]">
+              Category
+            </label>
 
             <select
               value={formData.category}
               onChange={handleCategoryChange}
-              className="w-full border rounded-lg p-3"
+              className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
             >
               <option value="">Select Category</option>
 
@@ -314,13 +324,15 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
           {/* Section */}
           <div>
-            <label className="block font-medium mb-2">Section</label>
+            <label className="block font-medium mb-2 text-[#4A3B2C]">
+              Section
+            </label>
 
             <select
               value={formData.section}
               onChange={handleSectionChange}
               disabled={!sections.length}
-              className="w-full border rounded-lg p-3"
+              className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
             >
               <option value="">Select Section</option>
 
@@ -334,13 +346,15 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
           {/* Item */}
           <div>
-            <label className="block font-medium mb-2">Item</label>
+            <label className="block font-medium mb-2 text-[#4A3B2C]">
+              Item
+            </label>
 
             <select
               value={formData.item}
               onChange={handleItemChange}
               disabled={!items.length}
-              className="w-full border rounded-lg p-3"
+              className="w-full border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
             >
               <option value="">Select Item</option>
 
@@ -354,7 +368,9 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
           {/* Eco Badges */}
           <div>
-            <label className="block font-medium mb-4">Eco Badges</label>
+            <label className="block font-medium mb-4 text-[#4A3B2C]">
+              Eco Badges
+            </label>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {ECO_BADGES.map((badge) => (
@@ -379,7 +395,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
               <button
                 type="button"
                 onClick={addImageField}
-                className="flex items-center gap-2 text-green-600"
+                className="flex items-center gap-2 text-[#7C8B65] hover:text-[#5A6B4A] transition-colors"
               >
                 <Plus size={18} />
                 Add Image
@@ -394,13 +410,13 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
                     placeholder="Enter Image URL"
                     value={image}
                     onChange={(e) => handleImageChange(index, e.target.value)}
-                    className="flex-1 border rounded-lg p-3"
+                    className="flex-1 border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
                   />
 
                   <button
                     type="button"
                     onClick={() => removeImageField(index)}
-                    className="bg-red-100 text-red-600 px-4 rounded-lg"
+                    className="bg-[#F8E8E8] text-[#B3432B] px-4 rounded-lg hover:bg-[#E8D8D8] transition-colors"
                   >
                     <Trash2 size={18} />
                   </button>
@@ -414,7 +430,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-green-600 hover:bg-green-700 disabled:bg-green-300 text-white px-8 py-3 rounded-lg transition"
+              className="bg-[#A8572E] hover:bg-[#8E4525] disabled:bg-[#D4A088] text-white px-8 py-3 rounded-lg transition-colors"
             >
               {loading
                 ? "Saving..."

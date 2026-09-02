@@ -28,15 +28,17 @@ const Wishlist = () => {
   if (wishlist.length === 0) {
     return (
       <div className="max-w-6xl mx-auto py-20 text-center">
-        <Heart size={60} className="mx-auto text-gray-400 mb-4" />
+        <Heart size={60} className="mx-auto text-[#9C8D7B] mb-4" />
 
-        <h2 className="text-2xl font-semibold">Your wishlist is empty</h2>
+        <h2 className="text-2xl font-semibold text-[#2E2016]">
+          Your wishlist is empty
+        </h2>
 
-        <p className="text-gray-500 mt-2">Save products you love for later.</p>
+        <p className="text-[#7A6A58] mt-2">Save products you love for later.</p>
 
         <Link
           to="/products"
-          className="inline-block mt-6 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg"
+          className="inline-block mt-6 bg-[#A8572E] hover:bg-[#8E4525] text-white px-6 py-3 rounded-lg"
         >
           Browse Products
         </Link>
@@ -46,7 +48,7 @@ const Wishlist = () => {
 
   return (
     <div className="max-w-7xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8">My Wishlist</h1>
+      <h1 className="text-3xl font-bold mb-8 text-[#2E2016]">My Wishlist</h1>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
         {wishlist.map((product) => (
@@ -66,11 +68,11 @@ const Wishlist = () => {
               />
 
               <div className="p-4">
-                <h3 className="font-semibold text-lg hover:text-green-600 transition-colors">
+                <h3 className="font-semibold text-lg hover:text-[#A8572E] transition-colors text-[#2E2016]">
                   {product.name}
                 </h3>
 
-                <p className="text-gray-500 mt-2 line-clamp-2">
+                <p className="text-[#7A6A58] mt-2 line-clamp-2">
                   {product.description}
                 </p>
 
@@ -92,7 +94,7 @@ const Wishlist = () => {
 
               <button
                 onClick={() => handleMoveToCart(product._id)}
-                className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg flex justify-center items-center gap-2"
+                className="w-full bg-[#A8572E] hover:bg-[#8E4525] text-white py-3 rounded-lg flex justify-center items-center gap-2"
               >
                 <ShoppingCart size={18} />
                 Move to Cart

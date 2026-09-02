@@ -25,22 +25,22 @@ const getNextStatuses = (status) => {
 const getStatusStyle = (status) => {
   switch (status) {
     case "Pending":
-      return "bg-yellow-100 text-yellow-800";
+      return "bg-[#F3E8D6] text-[#8C6B2E]";
 
     case "Processing":
-      return "bg-blue-100 text-blue-800";
+      return "bg-[#FFF1D6] text-[#A96816]";
 
     case "Shipped":
-      return "bg-purple-100 text-purple-800";
+      return "bg-[#E8EEF8] text-[#46658E]";
 
     case "Delivered":
-      return "bg-green-100 text-green-800";
+      return "bg-[#E8F1E5] text-[#54724A]";
 
     case "Cancelled":
-      return "bg-red-100 text-red-800";
+      return "bg-[#F8E8E8] text-[#8E4646]";
 
     default:
-      return "bg-gray-100 text-gray-700";
+      return "bg-[#F3ECE1] text-[#4A3B2C]";
   }
 };
 
@@ -58,22 +58,26 @@ const SellerOrderCard = ({ order, refresh }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow p-6 mb-6">
+    <div className="bg-white rounded-xl shadow p-6 mb-6 border border-[#E6DBC8]">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:justify-between gap-6">
         <div>
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-xl font-semibold text-[#2E2016]">
             Order #{order._id.slice(-6)}
           </h2>
 
-          <p className="mt-2 font-medium">{order.customer.name}</p>
+          <p className="mt-2 font-medium text-[#4A3B2C]">
+            {order.customer.name}
+          </p>
 
-          <p className="text-gray-500">{order.customer.email}</p>
+          <p className="text-[#7A6A58]">{order.customer.email}</p>
         </div>
 
         <div className="text-right">
           <p className="mb-3">
-            <span className="font-semibold">Current Status:</span>
+            <span className="font-semibold text-[#4A3B2C]">
+              Current Status:
+            </span>
           </p>
 
           <span
@@ -89,7 +93,7 @@ const SellerOrderCard = ({ order, refresh }) => {
               <select
                 defaultValue=""
                 onChange={handleStatus}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className="border border-[#E6DBC8] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
               >
                 <option value="" disabled>
                   Change Status
@@ -102,7 +106,7 @@ const SellerOrderCard = ({ order, refresh }) => {
                 ))}
               </select>
             ) : (
-              <span className="text-gray-500 font-medium">
+              <span className="text-[#7A6A58] font-medium">
                 No actions available
               </span>
             )}
@@ -118,12 +122,14 @@ const SellerOrderCard = ({ order, refresh }) => {
             className="flex justify-between items-center border-t py-4"
           >
             <div>
-              <h3 className="font-medium">{item.product.name}</h3>
+              <h3 className="font-medium text-[#2E2016]">
+                {item.product.name}
+              </h3>
 
-              <p className="text-gray-500">Qty: {item.quantity}</p>
+              <p className="text-[#7A6A58]">Qty: {item.quantity}</p>
             </div>
 
-            <p className="font-semibold">₹{item.price}</p>
+            <p className="font-semibold text-[#A8572E]">₹{item.price}</p>
           </div>
         ))}
       </div>

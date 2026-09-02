@@ -98,14 +98,16 @@ const ReviewSection = ({ product }) => {
 
   return (
     <div className="mt-16">
-      <h2 className="text-3xl font-bold mb-8">Customer Reviews</h2>
+      <h2 className="text-3xl font-bold mb-8 text-[#2E2016]">
+        Customer Reviews
+      </h2>
 
-      <div className="bg-white rounded-lg shadow p-6 mb-8">
-        <h3 className="text-2xl font-bold">
+      <div className="bg-white rounded-lg shadow p-6 mb-8 border border-[#E6DBC8]">
+        <h3 className="text-2xl font-bold text-[#2E2016]">
           ⭐ {product.averageRating.toFixed(1)}
         </h3>
 
-        <p className="text-gray-600 mt-2">{product.numReviews} Reviews</p>
+        <p className="text-[#7A6A58] mt-2">{product.numReviews} Reviews</p>
       </div>
 
       {user && (
@@ -121,9 +123,9 @@ const ReviewSection = ({ product }) => {
 
       <div className="mt-8 space-y-5">
         {loading ? (
-          <p>Loading Reviews...</p>
+          <p className="text-[#7A6A58]">Loading Reviews...</p>
         ) : reviews.length === 0 ? (
-          <p>No reviews yet.</p>
+          <p className="text-[#7A6A58]">No reviews yet.</p>
         ) : (
           reviews.map((review) => (
             <ReviewCard

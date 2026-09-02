@@ -22,22 +22,22 @@ const ProductTable = ({ products, setProducts }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow overflow-hidden">
+    <div className="bg-white rounded-xl shadow overflow-hidden border border-[#E6DBC8]">
       <table className="w-full">
-        <thead className="bg-gray-100">
+        <thead className="bg-[#F3ECE1]">
           <tr>
-            <th className="text-left p-4">Image</th>
-            <th className="text-left p-4">Product</th>
-            <th className="text-left p-4">Price</th>
-            <th className="text-left p-4">Stock</th>
-            <th className="text-left p-4">Sold</th>
-            <th className="text-left p-4">Actions</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Image</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Product</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Price</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Stock</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Sold</th>
+            <th className="text-left p-4 text-[#4A3B2C]">Actions</th>
           </tr>
         </thead>
 
         <tbody>
           {products.map((product) => (
-            <tr key={product._id} className="border-t">
+            <tr key={product._id} className="border-t border-[#E6DBC8]">
               <td className="p-4">
                 <img
                   src={product.images[0]}
@@ -46,25 +46,25 @@ const ProductTable = ({ products, setProducts }) => {
                 />
               </td>
 
-              <td className="p-4">{product.name}</td>
+              <td className="p-4 text-[#2E2016]">{product.name}</td>
 
-              <td className="p-4">₹{product.price}</td>
+              <td className="p-4 text-[#A8572E]">₹{product.price}</td>
 
-              <td className="p-4">{product.stock}</td>
+              <td className="p-4 text-[#2E2016]">{product.stock}</td>
 
-              <td className="p-4">{product.sold}</td>
+              <td className="p-4 text-[#2E2016]">{product.sold}</td>
 
               <td className="p-4">
                 <div className="flex gap-2">
                   <Link to={`/seller/products/edit/${product._id}`}>
-                    <button className="p-2 rounded-lg bg-blue-100 text-blue-600 hover:bg-blue-200">
+                    <button className="p-2 rounded-lg bg-[#E8EEF8] text-[#46658E] hover:bg-[#D8E2F0] transition-colors">
                       <Pencil size={18} />
                     </button>
                   </Link>
 
                   <button
                     onClick={() => handleDelete(product._id)}
-                    className="p-2 rounded-lg bg-red-100 text-red-600 hover:bg-red-200"
+                    className="p-2 rounded-lg bg-[#F8E8E8] text-[#B3432B] hover:bg-[#E8D8D8] transition-colors"
                   >
                     <Trash2 size={18} />
                   </button>

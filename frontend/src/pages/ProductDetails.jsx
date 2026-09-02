@@ -65,7 +65,7 @@ const ProductDetails = () => {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-green-600 border-t-transparent"></div>
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#A8572E] border-t-transparent"></div>
       </div>
     );
   }
@@ -80,7 +80,7 @@ const ProductDetails = () => {
 
           <Link
             to="/products"
-            className="text-green-600 hover:text-green-700 font-medium"
+            className="text-[#A8572E] hover:text-[#8E4525] font-medium"
           >
             Back to Products
           </Link>
@@ -90,12 +90,12 @@ const ProductDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-[#FAF3E8] py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Back Button */}
         <Link
           to="/products"
-          className="inline-flex items-center text-green-600 hover:text-green-700 mb-6 font-medium"
+          className="inline-flex items-center text-[#A8572E] hover:text-[#8E4525] mb-6 font-medium"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
           Back to Products
@@ -120,8 +120,8 @@ const ProductDetails = () => {
                     onClick={() => setSelectedImage(index)}
                     className={`rounded-lg overflow-hidden border-2 transition-colors ${
                       selectedImage === index
-                        ? "border-green-600"
-                        : "border-transparent hover:border-gray-300"
+                        ? "border-[#A8572E]"
+                        : "border-transparent hover:border-[#E6DBC8]"
                     }`}
                   >
                     <img
@@ -140,68 +140,68 @@ const ProductDetails = () => {
             <div className="bg-white rounded-xl shadow-md p-8">
               {/* Eco Badge */}
               <div className="flex items-center mb-4">
-                <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                <span className="bg-[#E8F1E5] text-[#54724A] px-3 py-1 rounded-full text-sm font-medium flex items-center">
                   <Leaf className="h-4 w-4 mr-1" />
                   {product.ecoBadge}
                 </span>
 
-                <span className="ml-3 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+                <span className="ml-3 bg-[#F3ECE1] text-[#4A3B2C] px-3 py-1 rounded-full text-sm">
                   {product.category}
                 </span>
               </div>
 
               {/* Name */}
-              <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              <h1 className="text-3xl font-bold text-[#2E2016] mb-4">
                 {product.name}
               </h1>
 
               {/* Price */}
-              <div className="text-3xl font-bold text-green-600 mb-6">
+              <div className="text-3xl font-bold text-[#A8572E] mb-6">
                 ${product.price.toFixed(2)}
               </div>
 
               {/* Description */}
               <div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                <h2 className="text-lg font-semibold text-[#2E2016] mb-2">
                   Description
                 </h2>
 
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-[#7A6A58] leading-relaxed">
                   {product.description}
                 </p>
               </div>
 
               {/* Seller Info */}
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <h3 className="font-semibold text-gray-900 mb-1">Sold by</h3>
+              <div className="bg-[#F3ECE1] rounded-lg p-4 mb-6">
+                <h3 className="font-semibold text-[#2E2016] mb-1">Sold by</h3>
 
-                <p className="text-gray-600">{product.sellerName}</p>
+                <p className="text-[#7A6A58]">{product.sellerName}</p>
               </div>
 
               {/* Eco Features */}
               <div className="mb-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-3">
+                <h2 className="text-lg font-semibold text-[#2E2016] mb-3">
                   Eco Features
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  <div className="flex items-center text-gray-600">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  <div className="flex items-center text-[#7A6A58]">
+                    <CheckCircle className="h-5 w-5 text-[#7C8B65] mr-2" />
                     <span className="text-sm">Sustainably sourced</span>
                   </div>
 
-                  <div className="flex items-center text-gray-600">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  <div className="flex items-center text-[#7A6A58]">
+                    <CheckCircle className="h-5 w-5 text-[#7C8B65] mr-2" />
                     <span className="text-sm">Eco-friendly packaging</span>
                   </div>
 
-                  <div className="flex items-center text-gray-600">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  <div className="flex items-center text-[#7A6A58]">
+                    <CheckCircle className="h-5 w-5 text-[#7C8B65] mr-2" />
                     <span className="text-sm">Handcrafted quality</span>
                   </div>
 
-                  <div className="flex items-center text-gray-600">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                  <div className="flex items-center text-[#7A6A58]">
+                    <CheckCircle className="h-5 w-5 text-[#7C8B65] mr-2" />
                     <span className="text-sm">Carbon neutral shipping</span>
                   </div>
                 </div>
@@ -213,7 +213,7 @@ const ProductDetails = () => {
                 <button
                   onClick={handleAddToCart}
                   disabled={addingToCart}
-                  className="w-full bg-green-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full bg-[#A8572E] text-white py-3 px-6 rounded-lg font-semibold hover:bg-[#8E4525] transition-colors flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <ShoppingCart className="h-5 w-5 mr-2" />
 
@@ -222,7 +222,7 @@ const ProductDetails = () => {
 
                 {/* Success Message */}
                 {cartMessage && (
-                  <p className="text-center text-sm text-green-600">
+                  <p className="text-center text-sm text-[#7C8B65]">
                     {cartMessage}
                   </p>
                 )}
@@ -235,15 +235,15 @@ const ProductDetails = () => {
                 )}
 
                 {/* Wishlist */}
-                <button className="w-full border-2 border-green-600 text-green-600 py-3 px-6 rounded-lg font-semibold hover:bg-green-50 transition-colors flex items-center justify-center">
+                <button className="w-full border-2 border-[#A8572E] text-[#A8572E] py-3 px-6 rounded-lg font-semibold hover:bg-[#F3E9DA] transition-colors flex items-center justify-center">
                   <Heart className="h-5 w-5 mr-2" />
                   Add to Wishlist
                 </button>
               </div>
 
               {/* Shipping Info */}
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <div className="flex items-center text-gray-600 mb-2">
+              <div className="mt-6 pt-6 border-t border-[#E6DBC8]">
+                <div className="flex items-center text-[#7A6A58] mb-2">
                   <Truck className="h-5 w-5 mr-2" />
 
                   <span className="text-sm">
@@ -251,7 +251,7 @@ const ProductDetails = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-[#7A6A58]">
                   <Shield className="h-5 w-5 mr-2" />
 
                   <span className="text-sm">30-day return policy</span>
@@ -265,18 +265,18 @@ const ProductDetails = () => {
 
         {/* Similar Products Section */}
         <div className="mt-12">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
+          <h2 className="text-2xl font-bold text-[#2E2016] mb-6">
             More from {product.category}
           </h2>
 
           <div className="text-center py-8 bg-white rounded-xl shadow-md">
-            <p className="text-gray-600 mb-4">
+            <p className="text-[#7A6A58] mb-4">
               Discover more products in this category
             </p>
 
             <Link
               to={`/products?category=${encodeURIComponent(product.category)}`}
-              className="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-700 transition-colors"
+              className="inline-flex items-center bg-[#A8572E] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#8E4525] transition-colors"
             >
               View All {product.category} Products
             </Link>
