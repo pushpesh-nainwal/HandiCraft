@@ -413,7 +413,19 @@ const Products = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {sortedProducts.map((product) => (
+            {sortedProducts.map((product) => {
+              const getImageUrl = (image) => {
+                if (typeof image === 'string') return image;
+                if (image?.url) return image.url;
+                // Handle malformed object with numeric keys
+                if (typeof image === 'object' && image !== null) {
+                  const values = Object.values(image).filter(v => typeof v === 'string' && v.length === 1);
+                  if (values.length > 0) return values.join('');
+                }
+                return null;
+              };
+
+              return (
               <Link
                 key={product._id}
                 to={`/products/${product._id}`}
@@ -423,7 +435,7 @@ const Products = () => {
                   <img
                     src={
                       product.images?.length
-                        ? product.images[0]
+                        ? getImageUrl(product.images[0]) || "https://via.placeholder.com/400x300?text=No+Image"
                         : "https://via.placeholder.com/400x300?text=No+Image"
                     }
                     alt={product.name}
@@ -532,7 +544,8 @@ const Products = () => {
                   </div>
                 </div>
               </Link>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

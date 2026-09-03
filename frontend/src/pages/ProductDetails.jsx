@@ -21,6 +21,19 @@ const ProductDetails = () => {
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
 
+  const getImageUrl = (image) => {
+    if (typeof image === "string") return image;
+    if (image?.url) return image.url;
+    // Handle malformed object with numeric keys
+    if (typeof image === "object" && image !== null) {
+      const values = Object.values(image).filter(
+        (v) => typeof v === "string" && v.length === 1,
+      );
+      if (values.length > 0) return values.join("");
+    }
+    return null;
+  };
+
   // Cart states
   const [addingToCart, setAddingToCart] = useState(false);
   const [cartMessage, setCartMessage] = useState("");
@@ -106,7 +119,10 @@ const ProductDetails = () => {
           <div>
             <div className="bg-white rounded-xl shadow-md overflow-hidden mb-4">
               <img
-                src={product.images[selectedImage]}
+                src={
+                  getImageUrl(product.images[selectedImage]) ||
+                  "https://via.placeholder.com/400x300?text=No+Image"
+                }
                 alt={product.name}
                 className="w-full h-96 object-cover"
               />
@@ -125,7 +141,10 @@ const ProductDetails = () => {
                     }`}
                   >
                     <img
-                      src={image}
+                      src={
+                        getImageUrl(image) ||
+                        "https://via.placeholder.com/400x300?text=No+Image"
+                      }
                       alt={`${product.name} ${index + 1}`}
                       className="w-full h-20 object-cover"
                     />
@@ -157,7 +176,7 @@ const ProductDetails = () => {
 
               {/* Price */}
               <div className="text-3xl font-bold text-[#A8572E] mb-6">
-                ${product.price.toFixed(2)}
+                ₹{product.price.toFixed(2)}
               </div>
 
               {/* Description */}
@@ -247,7 +266,7 @@ const ProductDetails = () => {
                   <Truck className="h-5 w-5 mr-2" />
 
                   <span className="text-sm">
-                    Free shipping on orders over $50
+                    Free shipping on orders over ₹ 50
                   </span>
                 </div>
 

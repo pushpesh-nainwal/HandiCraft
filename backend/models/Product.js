@@ -59,13 +59,24 @@ itemName: {
 },
 
     images: {
-      type: [String],
-      required: true,
-      validate: {
-        validator: (arr) => arr.length > 0,
-        message: "At least one image is required",
+  type: [
+    {
+      url: {
+        type: String,
+        required: true,
+      },
+      fileId: {
+        type: String,
+        required: true,
       },
     },
+  ],
+  required: true,
+  validate: {
+    validator: (arr) => arr.length > 0,
+    message: "At least one image is required",
+  },
+},
 
     // Multiple eco badges
     ecoBadges: {

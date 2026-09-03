@@ -1,5 +1,13 @@
-import express from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
+import express from 'express';
 import cors from 'cors';
 import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
@@ -10,9 +18,7 @@ import cartRoutes from "./routes/cart.js";
 import orderRoutes from "./routes/order.js";
 import wishlistRoutes from "./routes/wishlistRoutes.js";
 import reviewRoutes from "./routes/reviews.js";
-
-
-dotenv.config();
+import uploadRoutes from "./routes/uploadRoutes.js";
 
 const app = express();
 
@@ -33,6 +39,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use("/api/uploads", uploadRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'GreenCraft API is running' });

@@ -25,6 +25,17 @@ const Home = () => {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  const getImageUrl = (image) => {
+    if (typeof image === 'string') return image;
+    if (image?.url) return image.url;
+    // Handle malformed object with numeric keys
+    if (typeof image === 'object' && image !== null) {
+      const values = Object.values(image).filter(v => typeof v === 'string' && v.length === 1);
+      if (values.length > 0) return values.join('');
+    }
+    return null;
+  };
+
   const slides = [
     {
       image: slider1,
@@ -161,7 +172,7 @@ const Home = () => {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-1000 ${
-              currentSlide === index ? "opacity-100 z-10" : "opacity-0"
+              currentSlide === index ? "opacity-100 z-10" : "opacity-0 pointer-events-none"
             }`}
           >
             <img
@@ -329,7 +340,7 @@ const Home = () => {
                 >
                   <div className="relative">
                     <img
-                      src={product.images[0]}
+                      src={getImageUrl(product.images[0]) || "https://via.placeholder.com/400x300?text=No+Image"}
                       alt={product.name}
                       className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
                     />

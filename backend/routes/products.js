@@ -64,6 +64,14 @@ const validateProduct = [
     .isArray({ min: 1 })
     .withMessage("At least one image is required"),
 
+  body("images.*.url")
+    .isURL()
+    .withMessage("Invalid image URL"),
+
+   body("images.*.fileId")
+    .notEmpty()
+    .withMessage("Image file ID is required"),
+
   body("ecoBadges")
     .isArray({ min: 1 })
     .withMessage("Select at least one eco badge"),

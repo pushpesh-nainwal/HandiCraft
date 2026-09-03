@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Plus, Trash2 } from "lucide-react";
+import { Upload, X } from "lucide-react";
+import { upload } from "@imagekit/javascript";
 
 import {
   getCategories,
@@ -7,16 +8,19 @@ import {
   updateProduct,
 } from "../../services/productService";
 
+import { getImageKitAuth } from "../../services/uploadService";
+
 const ProductForm = ({ mode = "create", initialData = null }) => {
   console.log(mode);
   console.log(initialData);
+
   const [categories, setCategories] = useState([]);
-
   const [sections, setSections] = useState([]);
-
   const [items, setItems] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   const [formData, setFormData] = useState({
     name: "",
@@ -28,7 +32,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
     categoryName: "",
     sectionName: "",
     itemName: "",
-    images: [""],
+    images: [],
     ecoBadges: [],
     stock: 1,
   });
@@ -36,6 +40,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
   const fetchCategories = async () => {
     try {
       const data = await getCategories();
@@ -44,8 +49,10 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
       console.error(err);
     }
   };
+
   useEffect(() => {
     if (mode === "edit" && initialData && categories.length > 0) {
+      console.log("INITIAL PRODUCT IMAGES:", initialData.images);
       const selectedCategory = categories.find(
         (cat) => cat.slug === initialData.category,
       );
@@ -72,12 +79,13 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
         categoryName: initialData.categoryName,
         sectionName: initialData.sectionName,
         itemName: initialData.itemName,
-        images: initialData.images,
-        ecoBadges: initialData.ecoBadges,
+        images: initialData.images || [],
+        ecoBadges: initialData.ecoBadges || [],
         stock: initialData.stock,
       });
     }
   }, [mode, initialData, categories]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -86,6 +94,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
       [name]: value,
     }));
   };
+
   const handleCategoryChange = (e) => {
     const slug = e.target.value;
 
@@ -94,22 +103,19 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
     if (!selected) return;
 
     setSections(selected.sections);
-
     setItems([]);
 
     setFormData((prev) => ({
       ...prev,
-
       category: selected.slug,
       categoryName: selected.name,
-
       section: "",
       sectionName: "",
-
       item: "",
       itemName: "",
     }));
   };
+
   const handleSectionChange = (e) => {
     const slug = e.target.value;
 
@@ -121,14 +127,13 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
     setFormData((prev) => ({
       ...prev,
-
       section: selected.slug,
       sectionName: selected.title,
-
       item: "",
       itemName: "",
     }));
   };
+
   const handleItemChange = (e) => {
     const slug = e.target.value;
 
@@ -138,7 +143,6 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
 
     setFormData((prev) => ({
       ...prev,
-
       item: selected.slug,
       itemName: selected.name,
     }));
@@ -165,30 +169,72 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
       };
     });
   };
-  const handleImageChange = (index, value) => {
-    const updatedImages = [...formData.images];
 
-    updatedImages[index] = value;
+  // IMAGE UPLOAD
+  const handleImageUpload = async (e) => {
+    const input = e.target;
+    const files = Array.from(input.files);
 
-    setFormData((prev) => ({
-      ...prev,
-      images: updatedImages,
-    }));
+    if (!files.length) return;
+
+    if (formData.images.length + files.length > 5) {
+      setUploadError("You can upload a maximum of 5 images.");
+      input.value = "";
+      return;
+    }
+    try {
+      setUploading(true);
+      setUploadError("");
+
+      // Get ImageKit authentication from backend
+      const auth = await getImageKitAuth();
+
+      const uploadedImages = [];
+
+      for (const file of files) {
+        const result = await upload({
+          file,
+          fileName: file.name,
+
+          publicKey: auth.publicKey,
+          token: auth.token,
+          expire: auth.expire,
+          signature: auth.signature,
+
+          folder: "/greencraft/products",
+        });
+
+        uploadedImages.push({
+          url: result.url,
+          fileId: result.fileId,
+        });
+      }
+
+      setFormData((prev) => ({
+        ...prev,
+        images: [...prev.images, ...uploadedImages],
+      }));
+    } catch (error) {
+      console.error("Image upload failed:", error);
+
+      setUploadError(
+        error.response?.data?.message ||
+          error.message ||
+          "Failed to upload image",
+      );
+    } finally {
+      setUploading(false);
+
+      // Allows selecting the same image again
+      e.target.value = "";
+    }
   };
-  const addImageField = () => {
-    setFormData((prev) => ({
-      ...prev,
-      images: [...prev.images, ""],
-    }));
-  };
+
+  // REMOVE IMAGE FROM FORM
   const removeImageField = (index) => {
-    if (formData.images.length === 1) return;
-
-    const updatedImages = formData.images.filter((_, i) => i !== index);
-
     setFormData((prev) => ({
       ...prev,
-      images: updatedImages,
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -205,6 +251,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
         await createProduct(formData);
         alert("Product added successfully!");
       }
+
       if (mode === "create") {
         setFormData({
           name: "",
@@ -216,7 +263,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
           categoryName: "",
           sectionName: "",
           itemName: "",
-          images: [""],
+          images: [],
           ecoBadges: [],
           stock: 1,
         });
@@ -387,49 +434,86 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
             </div>
           </div>
 
-          {/* Images */}
+          {/* Product Images */}
           <div>
             <div className="flex justify-between items-center mb-4">
-              <label className="font-medium">Product Images</label>
+              <label className="font-medium text-[#4A3B2C]">
+                Product Images
+              </label>
 
-              <button
-                type="button"
-                onClick={addImageField}
-                className="flex items-center gap-2 text-[#7C8B65] hover:text-[#5A6B4A] transition-colors"
+              <label
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+                  uploading
+                    ? "bg-gray-300 cursor-not-allowed"
+                    : "bg-[#7C8B65] hover:bg-[#5A6B4A] text-white"
+                }`}
               >
-                <Plus size={18} />
-                Add Image
-              </button>
+                <Upload size={18} />
+
+                {uploading ? "Uploading..." : "Choose Images"}
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageUpload}
+                  disabled={uploading}
+                  className="hidden"
+                />
+              </label>
             </div>
 
-            <div className="space-y-3">
-              {formData.images.map((image, index) => (
-                <div key={index} className="flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Enter Image URL"
-                    value={image}
-                    onChange={(e) => handleImageChange(index, e.target.value)}
-                    className="flex-1 border border-[#E6DBC8] rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-[#A8572E]/30 focus:border-[#A8572E]"
-                  />
+            {/* Upload Error */}
+            {uploadError && (
+              <p className="text-sm text-red-600 mb-4">{uploadError}</p>
+            )}
 
-                  <button
-                    type="button"
-                    onClick={() => removeImageField(index)}
-                    className="bg-[#F8E8E8] text-[#B3432B] px-4 rounded-lg hover:bg-[#E8D8D8] transition-colors"
+            {/* Image Preview */}
+            {formData.images.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {formData.images.map((image, index) => (
+                  <div
+                    key={image.fileId || index}
+                    className="relative group border border-[#E6DBC8] rounded-lg overflow-hidden bg-[#FAF7F2]"
                   >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <img
+                      src={image.url}
+                      alt={`Product ${index + 1}`}
+                      className="w-full h-40 object-cover"
+                    />
+
+                    <button
+                      type="button"
+                      onClick={() => removeImageField(index)}
+                      className="absolute top-2 right-2 bg-white/90 text-[#B3432B] p-1.5 rounded-full shadow hover:bg-white"
+                    >
+                      <X size={16} />
+                    </button>
+
+                    <div className="p-2 text-xs text-[#6B5B4A]">
+                      Image {index + 1}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="border-2 border-dashed border-[#E6DBC8] rounded-lg p-8 text-center">
+                <Upload size={32} className="mx-auto mb-3 text-[#A8572E]" />
+
+                <p className="text-[#6B5B4A]">No images uploaded yet</p>
+
+                <p className="text-sm text-gray-400 mt-1">
+                  Select one or more product images
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Submit */}
           <div className="pt-4">
             <button
               type="submit"
-              disabled={loading}
+              disabled={loading || uploading}
               className="bg-[#A8572E] hover:bg-[#8E4525] disabled:bg-[#D4A088] text-white px-8 py-3 rounded-lg transition-colors"
             >
               {loading
@@ -444,4 +528,5 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
     </div>
   );
 };
+
 export default ProductForm;
