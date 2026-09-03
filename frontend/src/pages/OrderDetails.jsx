@@ -6,6 +6,17 @@ import { getOrderById } from "../services/orderService";
 const OrderDetails = () => {
   const { id } = useParams();
 
+  const getImageUrl = (image) => {
+    if (typeof image === 'string') return image;
+    if (image?.url) return image.url;
+    // Handle malformed object with numeric keys
+    if (typeof image === 'object' && image !== null) {
+      const values = Object.values(image).filter(v => typeof v === 'string' && v.length === 1);
+      if (values.length > 0) return values.join('');
+    }
+    return null;
+  };
+
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -90,7 +101,7 @@ const OrderDetails = () => {
           >
             <div className="flex gap-5 items-center">
               <img
-                src={item.product.images?.[0]}
+                src={getImageUrl(item.product.images?.[0]) || "https://via.placeholder.com/400x300?text=No+Image"}
                 alt={item.product.name}
                 className="w-24 h-24 rounded-lg object-cover"
               />

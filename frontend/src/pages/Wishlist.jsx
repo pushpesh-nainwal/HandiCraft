@@ -7,6 +7,17 @@ import { addToCart } from "../services/cartService";
 const Wishlist = () => {
   const { wishlist, loading, toggle } = useWishlist();
 
+  const getImageUrl = (image) => {
+    if (typeof image === 'string') return image;
+    if (image?.url) return image.url;
+    // Handle malformed object with numeric keys
+    if (typeof image === 'object' && image !== null) {
+      const values = Object.values(image).filter(v => typeof v === 'string' && v.length === 1);
+      if (values.length > 0) return values.join('');
+    }
+    return null;
+  };
+
   const handleMoveToCart = async (productId) => {
     try {
       await addToCart(productId);
@@ -60,7 +71,7 @@ const Wishlist = () => {
               <img
                 src={
                   product.images?.length
-                    ? product.images[0]
+                    ? getImageUrl(product.images[0]) || "https://via.placeholder.com/400"
                     : "https://via.placeholder.com/400"
                 }
                 alt={product.name}
