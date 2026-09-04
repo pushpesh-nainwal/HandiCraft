@@ -5,7 +5,7 @@ import CartItem from "../components/cart/CartItem";
 
 import { getCart, updateCart, removeFromCart } from "../services/cartService";
 
-import { placeOrder } from "../services/orderService";
+import { createRazorpayOrder, verifyPayment } from "../services/orderService";
 
 const Cart = () => {
   const [cart, setCart] = useState(null);
@@ -46,13 +46,50 @@ const Cart = () => {
   };
   const handlePlaceOrder = async () => {
     try {
-      await placeOrder();
+      // Step 1: Create Razorpay Order
+      const { razorpayOrder, totalAmount } = await createRazorpayOrder();
 
-      alert("Order placed successfully!");
+      // Step 2: Open Razorpay Checkout
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: razorpayOrder.amount,
+        currency: razorpayOrder.currency,
+        name: "HandiCraft",
+        description: "Eco-Friendly Products",
+        order_id: razorpayOrder.id,
+        handler: async function (response) {
+          try {
+            // Step 3: Verify Payment
+            await verifyPayment({
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_signature: response.razorpay_signature,
+            });
 
-      navigate("/orders");
+            alert("Order placed successfully!");
+            navigate("/orders");
+          } catch (err) {
+            alert(err.response?.data?.message || "Payment verification failed");
+          }
+        },
+        prefill: {
+          name: "",
+          email: "",
+          contact: "",
+        },
+        theme: {
+          color: "#A8572E",
+        },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+
+      rzp.on("payment.failed", function (response) {
+        alert("Payment failed: " + response.error.description);
+      });
     } catch (err) {
-      alert(err.response?.data?.message || "Failed to place order");
+      alert(err.response?.data?.message || "Failed to initiate payment");
     }
   };
 

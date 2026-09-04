@@ -1,4 +1,4 @@
-# GreenCraft - Eco-Friendly Marketplace
+# handiCraft - Eco-Friendly Marketplace
 
 A marketplace for handmade and eco-friendly products built with the MERN stack.
 

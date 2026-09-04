@@ -4,6 +4,16 @@ import api from "../utils/api";
 // Customer APIs
 // =======================
 
+export const createRazorpayOrder = async () => {
+  const response = await api.post("/orders/create-razorpay-order");
+  return response.data;
+};
+
+export const verifyPayment = async (paymentData) => {
+  const response = await api.post("/orders/verify-payment", paymentData);
+  return response.data;
+};
+
 export const placeOrder = async () => {
   const response = await api.post("/orders");
   return response.data;

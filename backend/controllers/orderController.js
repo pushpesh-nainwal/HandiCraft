@@ -4,6 +4,194 @@ import Cart from "../models/Cart.js";
 import Order from "../models/Order.js";
 import Product from "../models/Product.js";
 import { errorHandler } from "../middleware/errorHandler.js";
+import Razorpay from "razorpay";
+import crypto from "crypto";
+
+// Initialize Razorpay instance
+const getRazorpayInstance = () => {
+  return new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+};
+
+// =======================
+// Customer - Create Razorpay Order
+// =======================
+
+export const createRazorpayOrder = async (req, res, next) => {
+  try {
+    // Step 1 - Get User Cart
+    const cart = await Cart.findOne({
+      user: req.user._id,
+    }).populate("items.product");
+
+    // Step 2 - Empty Cart Check
+    if (!cart || cart.items.length === 0) {
+      return next(errorHandler(400, "Cart is empty"));
+    }
+
+    let totalAmount = 0;
+
+    // Step 3 - Calculate Total Amount
+    for (const item of cart.items) {
+      const product = item.product;
+
+      if (!product) {
+        return next(errorHandler(404, "Product not found"));
+      }
+
+      if (!product.isActive) {
+        return next(
+          errorHandler(400, `${product.name} is unavailable`)
+        );
+      }
+
+      if (product.stock < item.quantity) {
+        return next(
+          errorHandler(
+            400,
+            `Only ${product.stock} ${product.name} available`
+          )
+        );
+      }
+
+      totalAmount += product.price * item.quantity;
+    }
+
+    // Step 4 - Create Razorpay Order
+    const options = {
+      amount: totalAmount * 100, // Razorpay expects amount in paise
+      currency: "INR",
+      receipt: `order_${Date.now()}`,
+      notes: {
+        userId: req.user._id.toString(),
+      },
+    };
+
+    const razorpayInstance = getRazorpayInstance();
+    const razorpayOrder = await razorpayInstance.orders.create(options);
+
+    res.status(200).json({
+      success: true,
+      razorpayOrder,
+      totalAmount,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// =======================
+// Customer - Verify Razorpay Payment
+// =======================
+
+export const verifyPayment = async (req, res, next) => {
+  try {
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+
+    // Verify signature
+    const generated_signature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+      .digest("hex");
+
+    if (generated_signature !== razorpay_signature) {
+      return next(errorHandler(400, "Invalid payment signature"));
+    }
+
+    // Step 1 - Get User Cart
+    const cart = await Cart.findOne({
+      user: req.user._id,
+    }).populate("items.product");
+
+    // Step 2 - Empty Cart Check
+    if (!cart || cart.items.length === 0) {
+      return next(errorHandler(400, "Cart is empty"));
+    }
+
+    const orderItems = [];
+    let totalAmount = 0;
+
+    // Step 3 - Prepare Order Items
+    for (const item of cart.items) {
+      const product = item.product;
+
+      if (!product) {
+        return next(errorHandler(404, "Product not found"));
+      }
+
+      if (!product.isActive) {
+        return next(
+          errorHandler(400, `${product.name} is unavailable`)
+        );
+      }
+
+      if (product.stock < item.quantity) {
+        return next(
+          errorHandler(
+            400,
+            `Only ${product.stock} ${product.name} available`
+          )
+        );
+      }
+
+      orderItems.push({
+        product: product._id,
+        seller: product.seller,
+        quantity: item.quantity,
+        price: product.price,
+      });
+
+      totalAmount += product.price * item.quantity;
+    }
+
+    // Step 4 - Create Order with Payment Details
+    const order = await Order.create({
+      user: req.user._id,
+      items: orderItems,
+      totalAmount,
+      paymentStatus: "Paid",
+      paymentId: razorpay_payment_id,
+      razorpayOrderId: razorpay_order_id,
+    });
+
+    // Step 5 - Update Product Stock and Sold Count
+    for (const item of cart.items) {
+      const product = item.product;
+
+      product.stock -= item.quantity;
+      product.sold += item.quantity;
+
+      await product.save();
+    }
+
+    // Step 6 - Clear Cart
+    cart.items = [];
+    await cart.save();
+
+    // Populate response
+    await order.populate([
+      {
+        path: "items.product",
+        select: "name images",
+      },
+      {
+        path: "user",
+        select: "name email",
+      },
+    ]);
+
+    // Step 7 - Response
+    res.status(201).json({
+      success: true,
+      message: "Payment verified and order placed successfully",
+      order,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 // =======================
 // Customer - Place Order
