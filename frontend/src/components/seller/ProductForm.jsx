@@ -201,7 +201,7 @@ const ProductForm = ({ mode = "create", initialData = null }) => {
           expire: auth.expire,
           signature: auth.signature,
 
-          folder: "/greencraft/products",
+          folder: "/handicraft/products",
         });
 
         uploadedImages.push({

@@ -539,7 +539,7 @@ const Products = () => {
                     </span>
 
                     <span className="text-[11px] text-[#9C8D7B]">
-                      {product.seller?.name || "GreenCraft Seller"}
+                      {product.seller?.name || "HandiCraft Seller"}
                     </span>
                   </div>
                 </div>

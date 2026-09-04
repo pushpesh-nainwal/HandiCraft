@@ -16,6 +16,9 @@ import Register from "./pages/Register";
 import MyOrders from "./pages/MyOrders";
 import OrderDetails from "./pages/OrderDetails";
 import Wishlist from "./pages/Wishlist";
+import ForgotPassword from "./pages/ForgotPassword";
+import VerifyOTP from "./pages/VerifyOTP";
+import ResetPassword from "./pages/ResetPassword";
 
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrders from "./pages/admin/Orders";
@@ -43,6 +46,12 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/register" element={<Register />} />
+
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+
+          <Route path="/verify-otp" element={<VerifyOTP />} />
+
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           <Route
             path="/cart"

@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { errorHandler } from '../middleware/errorHandler.js';
+import { generateOTP, storeOTP, verifyOTP } from '../utils/otpStore.js';
+import nodemailer from 'nodemailer';
 
 // Generate JWT Token
 const generateToken = (id) => {
@@ -97,7 +99,7 @@ export const login = async (req, res, next) => {
 export const getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);
-    
+
     res.status(200).json({
       success: true,
       user: {
@@ -106,6 +108,97 @@ export const getProfile = async (req, res, next) => {
         email: user.email,
         role: user.role
       }
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Send OTP for password reset
+// @route   POST /api/auth/forgot-password
+// @access  Public
+export const sendOTP = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    // Check if user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return errorHandler(404, 'User not found with this email');
+    }
+
+    // Generate OTP
+    const otp = generateOTP();
+    storeOTP(email, otp);
+
+    // Send email
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: 'Password Reset OTP',
+      text: `Your OTP for password reset is: ${otp}. This OTP will expire in 10 minutes.`
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({
+      success: true,
+      message: 'OTP sent to your email'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Verify OTP
+// @route   POST /api/auth/verify-otp
+// @access  Public
+export const verifyOTPCode = async (req, res, next) => {
+  try {
+    const { email, otp } = req.body;
+
+    const isValid = verifyOTP(email, otp);
+    if (!isValid) {
+      return errorHandler(400, 'Invalid or expired OTP');
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'OTP verified successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Reset password
+// @route   POST /api/auth/reset-password
+// @access  Public
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { email, newPassword } = req.body;
+
+    // Find user
+    const user = await User.findOne({ email });
+    if (!user) {
+      return errorHandler(404, 'User not found');
+    }
+
+    // Update password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successfully'
     });
   } catch (error) {
     next(error);
