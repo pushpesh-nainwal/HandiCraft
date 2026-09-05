@@ -42,7 +42,7 @@ app.use("/api/reviews", reviewRoutes);
 app.use("/api/uploads", uploadRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'GreenCraft API is running' });
+  res.json({ status: 'ok', message: 'HAndiCraft API is running' });
 });
 
 // Error handling middleware

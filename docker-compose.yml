@@ -1,0 +1,20 @@
+services:
+  backend:
+    build: ./backend
+    container_name: handicraft-backend
+    env_file:
+      - ./backend/.env
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./backend/.env:/app/.env:ro
+    ports:
+      - "5000:5000"
+
+  frontend:
+    build: ./frontend
+    container_name: handicraft-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
